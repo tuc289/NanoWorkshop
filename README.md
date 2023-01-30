@@ -21,7 +21,7 @@ Nanopore sequencing tutorial workshop for bacterial isolates. In this page, we w
 <a name="install_and_configure"></a>
 ## Installation and configuration
 
-### 1. GalaxyTrkr 
+### 1. GalaxyTrakr 
 
 <a name="workflow"></a>
 ## Workflow
