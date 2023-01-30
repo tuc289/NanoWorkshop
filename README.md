@@ -101,7 +101,18 @@ Now, one huge *.fastq* file is generated as [output file name].fastq
 ### Quality Control
 
 <a name="genome_assembly"></a>
-### Genome assembly
+### Genome assembly ([**Flye**](https://github.com/fenderglass/Flye))
+
+Flye is a *de novo* assembler for long read sequencing reads (i.e., PacBio or Oxford Nanopore). It takes raw reads as input and outputs polished contigs. 
+
+If you are using raw nanopore reads directly from the run (fast base balled reads)
+```
+flye --nano-raw [combined raw reads from previous step].fastq --genome-size 5m -o ./ -t 4
+```
+If you are using corrected high accuracy reads from Guppy output
+```
+flye --nano-hq [combined raw reads from previous step].fastq --genome-size 5m -o ./ -t 4
+```
 
 <a name="genome_polishing"></a>
 ### Genome polishing
