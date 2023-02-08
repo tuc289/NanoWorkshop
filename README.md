@@ -11,6 +11,7 @@ Nanopore sequencing tutorial workshop for bacterial isolates. In this page, we w
   * [Quality Control](#qualitycontrol)
   * [Genome assembly](#genome_assembly)
   * [Genome polishing](#genome_polishing)
+  * [Assembled genome assessment](#genome_assessment)
 * [Additional process](#Additional)
   * [Hybrid assembly](#hybrid)
 * [References and resources](#references)
@@ -116,6 +117,9 @@ flye --nano-hq [combined raw reads from previous step].fastq --genome-size 5m -o
 
 <a name="genome_polishing"></a>
 ### Genome polishing
+
+<a name="genome_assessment"></a>
+### Assembled genome assessment
 
 <a name="Additional"></a>
 ## Additional process
