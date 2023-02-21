@@ -1,6 +1,6 @@
-# Nanopore Workshop 
+# Nanopore whole genome sequence analyses workshop 
 
-Nanopore sequencing tutorial workshop for bacterial isolates. In this page, we will go over two parallel process of nanopore sequencing data using i) [GalaxyTrakr](https://galaxytrakr.org/root/login?redirect=%2F)  and ii) [Unix shell](https://en.wikipedia.org/wiki/Unix_shell) command line using same bioinformatics tools
+This tutorial provides an overview of analyses of bacterial whole-genome sequences produced using a Nanopore sequencer. The tutorial shows the process of applying the same bioinformatics tools for Nanopore sequence analyses using i) [GalaxyTrakr](https://galaxytrakr.org/root/login?redirect=%2F) and ii) [Unix shell](https://en.wikipedia.org/wiki/Unix_shell) command line.
 
 ## Table of contents 
 
@@ -11,8 +11,8 @@ Nanopore sequencing tutorial workshop for bacterial isolates. In this page, we w
   * [Quality Control](#qualitycontrol)
   * [Genome assembly](#genome_assembly)
   * [Genome polishing](#genome_polishing)
-  * [Assembled genome assessment](#genome_assessment)
-* [Additional process](#Additional)
+  * [Assembled genome quality assessment](#genome_assessment)
+* [Additional analyses](#Additional)
   * [Hybrid assembly](#hybrid)
 * [References and resources](#references)
 
@@ -32,22 +32,22 @@ Nanopore sequencing tutorial workshop for bacterial isolates. In this page, we w
 
 [Performs high accuracy basecalling from FAST5 files](#basecalling) ([**guppy**](https://community.nanoporetech.com/protocols/Guppy-protocol/v/gpb_2003_v1_revaa_14dec2018/linux-guppy))
 
-Basecalling is the process of generating sequence data with its base quality score (.fastq) from the raw signaling results of the Nanopore MinION sequencer. Guppy is the current basecaller provided from Oxford Nanopore. Basecalling can be completed real-time during the sequencing run, however we can also generate high accuracy reads based on the complicated neural network based basecalling from Guppy. Additionally, Guppy can be used to trim the low quality reads and barcode sequences during basecalling
+Basecalling is the process of generating sequence data with base quality scores (.fastq) from the raw sequencing signal produced by the Nanopore MinION sequencer. In this workflow, we will use Guppy - the basecaller provided by the Oxford Nanopore Technologies (ONT). Guppy can also be used to trim the low quality reads and sequence barcode during basecalling. Rapid basecalling can be completed in real-time during the sequencing run. Alternatively, a high accuracy base-calling algorithm can be applied after completed sequencing run.
 
 Input files format - *.fast5*
 output files format - *.fastq*
 
-before starts, please check if guppy directory is in your PATH varaibles
+Before starting the analysis, please check if Guppy directory is in your PATH varaible
 ```
-export PATH=$PATH:/directory for guppy installation/bin
+export PATH=$PATH:/directory with Guppy installation/bin
 echo $PATH #check if ~/ont-guppy-cpu/bin is in the PATH variable
 ```
 
-Oxford Nanaopore technology provide different type of sequencing library kits, and different flowcells from different technology. It is important to select the same kits/flowcells for basecalling to recognize the right signal. To check the list of the kits and flowcells
+ONT provides different types of library kits and flowcells. It is important to select the same kit/flowcell for basecalling to ensure accurate signal recognition. You may print a list of kits and flowcells as follows:
 ```
 guppy_basecaller --print_workflows
 ```
-Now you will see something like this
+This command will return a list of available library kits and flowcells:
 ```
 Available flowcell + kit combinations are:
 flowcell       kit               barcoding config_name                    model version
@@ -66,14 +66,14 @@ FLO-PRO002     SQK-LSK109-XL               dna_r9.4.1_450bps_hac_prom     2021-0
 FLO-PRO002     SQK-LSK110                  dna_r9.4.1_450bps_hac_prom     2021-05-05_dna_r9.4.1_promethion_384_dd219f32
 ```
 
-Find the right combination between flowcells and library preparation kits (here, we are using "SQK-RBK004" and "FLO-MIN106"
+Identify the right combination of a flowcell and library preparation kit. In this workflow, we are using the library "SQK-RBK004" and the flowcell "FLO-MIN106".
 
 ```
 flowcell       kit               barcoding config_name                    model version
 FLO-MIN106     SQK-PBK004        included  dna_r9.4.1_450bps_hac          2021-05-17_dna_r9.4.1_minion_384_d37a2ab9
 ```
 
-Now, specify the input file, output directory, and configuration name (don't forget to add configuration file extenstion (.cfg) at the end)
+Next, specify the input file, output directory, and the configuration name (remember to add configuration file extenstion (.cfg) at the end of the name).
 
 **hac** is representing "high accuracy"
 
@@ -82,21 +82,21 @@ guppy_basecaller -i [input.fast5] -s [output directory]
                  -c dna_r9.4.1_450bps_hac.cfg --num_callers 2 --cpu_threads_per_caller 1 --trim_barcodes
 ```
 ```
---num_callers : how many parallel basecallers to create
---cpu_threads_per_caller : how many threads will be used per each callers
+--num_callers: how many parallel basecallers to create
+--cpu_threads_per_caller: how many threads will be used per each caller
 
 [num_callers] * [cpu_threads_per_caller] = number of available threads
 
---trim_barcodes : barcode trimming based on the kit information provided
+--trim_barcodes: barcode trimming based on the provided kit information
 ```
 
-Now, it will generate multiple *.fastq* file from *.fast5* file in our output directory, you can simply combined all the sequences from *.fastq* files into one *.fastq* file
+This will generate multiple *.fastq* files from a *.fast5* file in our output directory. You can simply combine all *.fastq* files into a single *.fastq* file as follows:
 ```
 cd [output directory]
 cat *.fastq > [output file name].fastq
 ```
 
-Now, one huge *.fastq* file is generated as [output file name].fastq
+This will generate a single, large *.fastq* file [output file name].fastq
 
 <a name="qualitycontrol"></a>
 ### Quality Control
