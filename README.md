@@ -30,7 +30,7 @@ This tutorial provides an overview of analyses of bacterial whole-genome sequenc
 <a name="basecalling"></a>
 ### Basecalling and demultiplexing 
 
-[Performs high accuracy basecalling from FAST5 files](#basecalling) ([**guppy**](https://community.nanoporetech.com/protocols/Guppy-protocol/v/gpb_2003_v1_revaa_14dec2018/linux-guppy))
+[Perform high accuracy basecalling from FAST5 files](#basecalling) ([**guppy**](https://community.nanoporetech.com/protocols/Guppy-protocol/v/gpb_2003_v1_revaa_14dec2018/linux-guppy))
 
 Basecalling is the process of generating sequence data with base quality scores (.fastq) from the raw sequencing signal produced by the Nanopore MinION sequencer. In this workflow, we will use Guppy - the basecaller provided by the Oxford Nanopore Technologies (ONT). Guppy can also be used to trim the low quality reads and sequence barcode during basecalling. Rapid basecalling can be completed in real-time during the sequencing run. Alternatively, a high accuracy base-calling algorithm can be applied after completed sequencing run.
 
